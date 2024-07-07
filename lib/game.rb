@@ -2,6 +2,9 @@
 
 require_relative 'words'
 
+require 'json'
+require 'date'
+
 # Game class to do nearly everything ;)
 class Game
   def initialize
@@ -9,11 +12,34 @@ class Game
     @game_won = false
   end
 
+  def save_game(name)
+    save_name_existing = false
+    save_name_counter = 0
+    saved_game = { 'name' => name, 'lifes' => @lifes, 'word' => @word, 'word_array' => @word_array }.to_json
+    File.write('lib/saved_games.txt', saved_game, mode: 'a')
+    # file = File.open('lib/saved_games.txt')
+    # while line = file.gets do
+     # puts line
+      #puts JSON.parse(line)
+    # end
+    #file.puts saved_game
+    # file.close
+    # saved_game
+    #file_data = 
+    save_game_array = File.read('lib/saved_games.txt').split
+    # puts save_game_array
+    save_game_array.each do |game_iteration|
+      p game_iteration
+    end
+    #File.foreach('lib/saved_games.txt') do |line|
+    # p file_data
+  end
+
   def receive_random_word
     @word = Words.new.return_random_word
     @word_array = Array.new(@word.length, '_')
     # p @word
-    p @word_array
+    p @word_array.join(' ')
   end
 
   def ask_for_letter
@@ -49,7 +75,7 @@ class Game
 
   def show_current_status
     p 'Current status of guessed characters:'
-    p @word_array
+    p @word_array.join(' ')
   end
 
   def play_round
@@ -63,7 +89,8 @@ class Game
 
   def play
     receive_random_word
-    play_round while @lifes.positive? && !@game_won
-    show_lose_message if @lifes.zero?
+    # play_round
+    # play_round while @lifes.positive? && !@game_won
+    # show_lose_message if @lifes.zero?
   end
 end

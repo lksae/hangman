@@ -1,0 +1,1 @@
+{"name":"test","lifes":8,"word":"librarian","word_array":["_","_","_","_","_","_","_","_","_"]}{"name":"test","lifes":8,"word":"chorus","word_array":["_","_","_","_","_","_"]}{"name":"test","lifes":8,"word":"media","word_array":["_","_","_","_","_"]}{"name":"test","lifes":8,"word":"newspapers","word_array":["_","_","_","_","_","_","_","_","_","_"]}
