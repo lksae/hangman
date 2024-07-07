@@ -3,7 +3,7 @@
 # Words class to load all words and return random
 class Words
   def initialize
-    @contents = File.read('google-10000-english-no-swears.txt').split
+    @contents = File.read('lib/google-10000-english-no-swears.txt').split
   end
 
   def return_random_word
@@ -15,5 +15,5 @@ class Words
   end
 end
 
-words = Words.new
-p words.return_random_word
+# words = Words.new
+# p words.return_random_word
