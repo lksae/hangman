@@ -1,1 +1,3 @@
-{"name":"test","lifes":8,"word":"librarian","word_array":["_","_","_","_","_","_","_","_","_"]}{"name":"test","lifes":8,"word":"chorus","word_array":["_","_","_","_","_","_"]}{"name":"test","lifes":8,"word":"media","word_array":["_","_","_","_","_"]}{"name":"test","lifes":8,"word":"newspapers","word_array":["_","_","_","_","_","_","_","_","_","_"]}
+{"name":"test","save_name_counter":0,"lifes":8,"word":"litigation","word_array":["_","_","_","_","_","_","_","_","_","_"]} 
+{"name":"test","save_name_counter":1,"lifes":8,"word":"mechanism","word_array":["_","_","_","_","_","_","_","_","_"]} 
+{"name":"test","save_name_counter":2,"lifes":8,"word":"fountain","word_array":["_","_","_","_","_","_","_","_"]} 

@@ -4,4 +4,4 @@ require_relative 'lib/game'
 
 game = Game.new
 game.play
-p game.save_game('test')
+game.save_game('test')

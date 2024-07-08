@@ -12,27 +12,20 @@ class Game
     @game_won = false
   end
 
-  def save_game(name)
-    save_name_existing = false
+  def check_for_existing_save_games(name)
     save_name_counter = 0
-    saved_game = { 'name' => name, 'lifes' => @lifes, 'word' => @word, 'word_array' => @word_array }.to_json
-    File.write('lib/saved_games.txt', saved_game, mode: 'a')
-    # file = File.open('lib/saved_games.txt')
-    # while line = file.gets do
-     # puts line
-      #puts JSON.parse(line)
-    # end
-    #file.puts saved_game
-    # file.close
-    # saved_game
-    #file_data = 
-    save_game_array = File.read('lib/saved_games.txt').split
-    # puts save_game_array
-    save_game_array.each do |game_iteration|
-      p game_iteration
+    file = File.open('lib/saved_games.txt').read
+    file.each_line do |line|
+      save_name_counter += 1 if JSON.parse(line)['name'] == name
     end
-    #File.foreach('lib/saved_games.txt') do |line|
-    # p file_data
+    save_name_counter
+  end
+
+  def save_game(name)
+    save_name_counter = check_for_existing_save_games(name)
+    saved_game = { 'name' => name, 'save_name_counter' => save_name_counter, 'lifes' => @lifes, 'word' => @word, 
+                   'word_array' => @word_array }.to_json
+    File.write('lib/saved_games.txt', "#{saved_game} \n", mode: 'a')
   end
 
   def receive_random_word
@@ -85,6 +78,10 @@ class Game
   def show_lose_message
     p "This was your last life. It's over now.."
     p "The word to be guessed was #{@word}"
+  end
+
+  def save_game?
+    
   end
 
   def play
