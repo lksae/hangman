@@ -1,0 +1,4 @@
+{"ID":1,"name":"test","save_name_counter":0,"lifes":8,"word":"valid","word_array":["_","_","_","_","_"],"time":"09/07/2024 18:58"} 
+{"ID":2,"name":"2","save_name_counter":0,"lifes":8,"word":"subscription","word_array":["_","_","_","_","_","_","_","_","_","_","_","_"],"time":"09/07/2024 18:58"} 
+{"ID":3,"name":"test 2","save_name_counter":0,"lifes":8,"word":"valid","word_array":["_","a","_","_","_"],"time":"09/07/2024 19:09"} 
+{"ID":4,"name":"test 3","save_name_counter":0,"lifes":7,"word":"valid","word_array":["_","a","_","_","_"],"time":"09/07/2024 19:10"} 

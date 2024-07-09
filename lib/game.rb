@@ -13,17 +13,19 @@ class Game
   end
 
   def check_for_existing_save_games(name)
+    file_counter = 1
     save_name_counter = 0
     file = File.open('lib/saved_games.txt').read
     file.each_line do |line|
       save_name_counter += 1 if JSON.parse(line)['name'] == name
+      file_counter += 1
     end
-    save_name_counter
+    [save_name_counter, file_counter]
   end
 
   def save_game(name)
-    save_name_counter = check_for_existing_save_games(name)
-    saved_game = { 'name' => name, 'save_name_counter' => save_name_counter, 'lifes' => @lifes, 'word' => @word,
+    counter = check_for_existing_save_games(name)
+    saved_game = { 'ID' => counter[1],'name' => name, 'save_name_counter' => counter[0], 'lifes' => @lifes, 'word' => @word,
                    'word_array' => @word_array, 'time' => Time.now.strftime('%d/%m/%Y %H:%M') }.to_json
     File.write('lib/saved_games.txt', "#{saved_game} \n", mode: 'a')
   end
@@ -72,8 +74,8 @@ class Game
   end
 
   def play_round
-    ask_for_save_game
-    return if @answer == 'yes'
+    ask_to_save_game
+    return if @save_game_answer == 'yes'
 
     check_if_letter_in_random_word(ask_for_letter)
   end
@@ -83,10 +85,10 @@ class Game
     p "The word to be guessed was #{@word}"
   end
 
-  def ask_for_save_game
+  def ask_to_save_game
     puts 'Do you want to save and end the game? yes or no'
-    @answer = gets.chomp
-    return unless @answer == 'yes'
+    @save_game_answer = gets.chomp
+    return unless @save_game_answer == 'yes'
 
     puts 'How do you want to call the saved game?'
     name = gets.chomp
@@ -94,8 +96,36 @@ class Game
     @game_over = true
   end
 
+  def ask_to_load_game
+    puts 'Do you want to load an existing game? yes or no'
+    @load_game_answer = gets.chomp
+    display_saved_games if @load_game_answer == 'yes'
+  end
+
+  def display_saved_games
+    file = File.open('lib/saved_games.txt').read
+    puts 'Please enter the ID of the file you want to load.'
+    file.each_line do |line|
+      puts "ID: #{JSON.parse(line)['ID']} Name: #{JSON.parse(line)['name']} Lifes: #{JSON.parse(line)['lifes']} Date: #{JSON.parse(line)['time']}" # rubocop:disable Layout/LineLength
+    end
+    answer = gets.chomp
+    load_selected_game(answer)
+  end
+
+  def load_selected_game(id)
+    file = File.open('lib/saved_games.txt').read
+    file.each_line do |line|
+      next unless id == JSON.parse(line)['ID'].to_s
+
+      @lifes = JSON.parse(line)['lifes']
+      @word = JSON.parse(line)['word']
+      @word_array = JSON.parse(line)['word_array']
+    end
+  end
+
   def play
-    receive_random_word
+    ask_to_load_game # prevent loading when no save games exist
+    receive_random_word if @load_game_answer != 'yes'
     # play_round
     play_round while @lifes.positive? && !@game_over
     show_lose_message if @lifes.zero?
