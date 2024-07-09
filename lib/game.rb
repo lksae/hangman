@@ -9,7 +9,7 @@ require 'date'
 class Game
   def initialize
     @lifes = 8
-    @game_won = false
+    @game_over = false
   end
 
   def check_for_existing_save_games(name)
@@ -23,8 +23,8 @@ class Game
 
   def save_game(name)
     save_name_counter = check_for_existing_save_games(name)
-    saved_game = { 'name' => name, 'save_name_counter' => save_name_counter, 'lifes' => @lifes, 'word' => @word, 
-                   'word_array' => @word_array }.to_json
+    saved_game = { 'name' => name, 'save_name_counter' => save_name_counter, 'lifes' => @lifes, 'word' => @word,
+                   'word_array' => @word_array, 'time' => Time.now.strftime('%d/%m/%Y %H:%M') }.to_json
     File.write('lib/saved_games.txt', "#{saved_game} \n", mode: 'a')
   end
 
@@ -56,7 +56,7 @@ class Game
     show_current_status
     return unless @word_array == @word.split('')
 
-    @game_won = true
+    @game_over = true
     p 'You have won this game. I am impressed'
   end
 
@@ -72,6 +72,9 @@ class Game
   end
 
   def play_round
+    ask_for_save_game
+    return if @answer == 'yes'
+
     check_if_letter_in_random_word(ask_for_letter)
   end
 
@@ -80,14 +83,21 @@ class Game
     p "The word to be guessed was #{@word}"
   end
 
-  def save_game?
-    
+  def ask_for_save_game
+    puts 'Do you want to save and end the game? yes or no'
+    @answer = gets.chomp
+    return unless @answer == 'yes'
+
+    puts 'How do you want to call the saved game?'
+    name = gets.chomp
+    save_game(name)
+    @game_over = true
   end
 
   def play
     receive_random_word
     # play_round
-    # play_round while @lifes.positive? && !@game_won
-    # show_lose_message if @lifes.zero?
+    play_round while @lifes.positive? && !@game_over
+    show_lose_message if @lifes.zero?
   end
 end
